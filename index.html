@@ -134,7 +134,14 @@
             font-size: 32px;
             color: #667eea;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 20px 0 10px 0;
+        }
+
+        .pinyin {
+            font-size: 20px;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 10px;
         }
 
         .options {
@@ -278,6 +285,7 @@
             <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
                 📌 File CSV cần có:<br>
                 - Cột C: Từ vựng<br>
+                - Cột E: Pinyin<br>
                 - Cột F: Nghĩa<br>
                 (Dòng đầu tiên là tiêu đề sẽ được bỏ qua)
             </p>
@@ -305,6 +313,7 @@
             <div class="question-box">
                 <div class="question">Từ sau có nghĩa là gì?</div>
                 <div class="vocab-word" id="vocabWord"></div>
+                <div class="pinyin" id="pinyin"></div>
             </div>
 
             <div id="options" class="options"></div>
@@ -364,13 +373,15 @@
                         vocabData = [];
                         for (let i = 1; i < rows.length; i++) {
                             const row = rows[i];
-                            // Cột C (index 2) là Từ vựng, Cột F (index 5) là Nghĩa
+                            // Cột C (index 2) là Từ vựng, Cột E (index 4) là Pinyin, Cột F (index 5) là Nghĩa
                             const vocab = row[2];
+                            const pinyin = row[4];
                             const meaning = row[5];
                             
                             if (vocab && meaning && vocab.trim() !== '' && meaning.trim() !== '') {
                                 vocabData.push({
                                     vocab: vocab.trim(),
+                                    pinyin: pinyin ? pinyin.trim() : '',
                                     meaning: meaning.trim()
                                 });
                             }
@@ -429,6 +440,7 @@
 
             document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
             document.getElementById('vocabWord').textContent = currentVocab.vocab;
+            document.getElementById('pinyin').textContent = currentVocab.pinyin;
             document.getElementById('score').textContent = score;
 
             const progress = ((currentQuestionIndex + 1) / vocabData.length) * 100;
